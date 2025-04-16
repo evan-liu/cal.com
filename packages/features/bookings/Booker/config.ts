@@ -1,5 +1,4 @@
-import { cubicBezier, useAnimate } from "framer-motion";
-import { useReducedMotion } from "framer-motion";
+import { cubicBezier, useAnimate, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
@@ -69,6 +68,26 @@ export const resizeAnimationConfig: ResizeAnimationConfig = {
         `,
       gridTemplateColumns: "100%",
       gridTemplateRows: "minmax(min-content,max-content) 1fr",
+    },
+  },
+  tablet: {
+    default: {
+      width: "100%",
+      gridTemplateAreas: `
+      "meta meta"
+      "main timeslots"
+      `,
+      gridTemplateColumns: "var(--booker-main-width) 1fr",
+      gridTemplateRows: "minmax(min-content,max-content) minmax(450px,1fr)",
+    },
+    booking: {
+      width: "100%",
+      gridTemplateAreas: `
+      "meta"
+      "main"
+      `,
+      gridTemplateColumns: "1fr",
+      gridTemplateRows: "minmax(min-content,max-content) minmax(450px,1fr)",
     },
   },
   month_view: {
@@ -223,6 +242,10 @@ export const extraDaysConfig = {
   mobile: {
     // Desktop tablet feels weird on mobile layout,
     // but this is simply here to make the types a lot easier..
+    desktop: 0,
+    tablet: 0,
+  },
+  tablet: {
     desktop: 0,
     tablet: 0,
   },

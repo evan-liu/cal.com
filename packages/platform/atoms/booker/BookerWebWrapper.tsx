@@ -1,14 +1,12 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { usePathname, useRouter } from "next/navigation";
-import { useMemo, useCallback, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo } from "react";
 import { shallow } from "zustand/shallow";
 
 import dayjs from "@calcom/dayjs";
-import { sdkActionManager } from "@calcom/embed-core/embed-iframe";
-import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
+import { sdkActionManager, useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import type { BookerProps } from "@calcom/features/bookings/Booker";
 import { Booker as BookerComponent } from "@calcom/features/bookings/Booker";
 import { useBookerLayout } from "@calcom/features/bookings/Booker/components/hooks/useBookerLayout";
@@ -23,7 +21,7 @@ import { useEvent, useScheduleForEvent } from "@calcom/features/bookings/Booker/
 import { getLastBookingResponse } from "@calcom/features/bookings/Booker/utils/lastBookingResponse";
 import { useBrandColors } from "@calcom/features/bookings/Booker/utils/use-brand-colors";
 import type { getPublicEvent } from "@calcom/features/eventtypes/lib/getPublicEvent";
-import { DEFAULT_LIGHT_BRAND_COLOR, DEFAULT_DARK_BRAND_COLOR, WEBAPP_URL } from "@calcom/lib/constants";
+import { DEFAULT_DARK_BRAND_COLOR, DEFAULT_LIGHT_BRAND_COLOR, WEBAPP_URL } from "@calcom/lib/constants";
 import { useRouterQuery } from "@calcom/lib/hooks/useRouterQuery";
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
 
@@ -73,7 +71,7 @@ export const BookerWebWrapper = (props: BookerWebWrapperAtomProps) => {
     rescheduleUid,
     rescheduledBy,
     bookingUid: bookingUid,
-    layout: bookerLayout.isMobile ? "mobile" : bookerLayout.defaultLayout,
+    layout: bookerLayout.isMobile ? "mobile" : bookerLayout.isTablet ? "tablet" : bookerLayout.defaultLayout,
     org: props.entity.orgSlug,
     timezone,
   });
