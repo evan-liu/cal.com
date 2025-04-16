@@ -19,7 +19,6 @@ import type { BookerLayout } from "../types";
 
 export function Header({
   extraDays,
-  isMobile,
   enabledLayouts,
   nextSlots,
   eventSlug,
@@ -27,7 +26,6 @@ export function Header({
   renderOverlay,
 }: {
   extraDays: number;
-  isMobile: boolean;
   enabledLayouts: BookerLayouts[];
   nextSlots: number;
   eventSlug: string;
@@ -56,7 +54,7 @@ export function Header({
     [setLayout, layout]
   );
 
-  if (isMobile || !enabledLayouts) return null;
+  if (layout == "mobile" || layout == "tablet" || !enabledLayouts) return null;
 
   // In month view we only show the layout toggle.
   if (isMonthView) {

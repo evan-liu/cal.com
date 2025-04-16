@@ -19,7 +19,7 @@ export const useBookerLayout = (event: Pick<BookerEvent, "profile"> | undefined 
   const [_layout, setLayout] = useBookerStore((state) => [state.layout, state.setLayout], shallow);
   const isEmbed = useIsEmbed();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const isTablet = useMediaQuery("(max-width: 1024px)");
+  const isTablet = useMediaQuery("(max-width: 1024px)") && !isMobile;
   const embedUiConfig = useEmbedUiConfig();
   // In Embed we give preference to embed configuration for the layout.If that's not set, we use the App configuration for the event layout
   // But if it's mobile view, there is only one layout supported which is 'mobile'
@@ -37,17 +37,24 @@ export const useBookerLayout = (event: Pick<BookerEvent, "profile"> | undefined 
     : bookerLayouts.defaultLayout;
 
   useEffect(() => {
-    if (isMobile && layout !== "mobile") {
-      setLayout("mobile");
-    } else if (!isMobile && layout === "mobile") {
+    if (isMobile) {
+      if (layout !== "mobile") {
+        setLayout("mobile");
+      }
+    } else if (isTablet) {
+      if (layout !== "tablet") {
+        setLayout("tablet");
+      }
+    } else if (layout === "mobile" || layout === "tablet") {
       setLayout(defaultLayout);
     }
-  }, [isMobile, setLayout, layout, defaultLayout]);
+  }, [isMobile, isTablet, setLayout, layout, defaultLayout]);
   //setting layout from query param
   useEffect(() => {
     const layout = getQueryParam("layout") as BookerLayouts;
     if (
       !isMobile &&
+      !isTablet &&
       !isEmbed &&
       validateLayout(layout) &&
       bookerLayouts?.enabledLayouts?.length &&
@@ -56,12 +63,14 @@ export const useBookerLayout = (event: Pick<BookerEvent, "profile"> | undefined 
       const validLayout = bookerLayouts.enabledLayouts.find((userLayout) => userLayout === layout);
       validLayout && setLayout(validLayout);
     }
-  }, [bookerLayouts, setLayout, _layout, isEmbed, isMobile]);
+  }, [bookerLayouts, setLayout, _layout, isEmbed, isMobile, isTablet]);
 
   // In Embed, a Dialog doesn't look good, we disable it intentionally for the layouts that support showing Form without Dialog(i.e. no-dialog Form)
   const shouldShowFormInDialogMap: Record<BookerLayout, boolean> = {
     // mobile supports showing the Form without Dialog
     mobile: !isEmbed,
+    // Same as month_view
+    tablet: false,
     // We don't show Dialog in month_view currently. Can be easily toggled though as it supports no-dialog Form
     month_view: false,
     // week_view doesn't support no-dialog Form

@@ -81,6 +81,7 @@ export const EventMeta = ({
   isPlatform?: boolean;
   classNames?: {
     eventMetaContainer?: string;
+    eventMetaContent?: string;
     eventMetaTitle?: string;
     eventMetaTimezoneSelect?: string;
   };
@@ -153,27 +154,33 @@ export const EventMeta = ({
         </m.div>
       )}
       {!isPending && !!event && (
-        <m.div {...fadeInUp} layout transition={{ ...fadeInUp.transition, delay: 0.3 }}>
-          <EventMembers
-            schedulingType={event.schedulingType}
-            users={event.subsetOfUsers}
-            profile={event.profile}
-            entity={event.entity}
-            isPrivateLink={isPrivateLink}
-          />
-          <EventTitle className={`${classNames?.eventMetaTitle} my-2`}>
-            {translatedTitle ?? event?.title}
-          </EventTitle>
-          {(event.description || translatedDescription) && (
-            <EventMetaBlock contentClassName="mb-8 break-words max-w-full max-h-[180px] scroll-bar pr-4">
-              <div
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{
-                  __html: markdownToSafeHTMLClient(translatedDescription ?? event.description),
-                }}
-              />
-            </EventMetaBlock>
-          )}
+        <m.div
+          {...fadeInUp}
+          layout
+          transition={{ ...fadeInUp.transition, delay: 0.3 }}
+          className={classNames?.eventMetaContent}>
+          <div>
+            <EventMembers
+              schedulingType={event.schedulingType}
+              users={event.subsetOfUsers}
+              profile={event.profile}
+              entity={event.entity}
+              isPrivateLink={isPrivateLink}
+            />
+            <EventTitle className={`${classNames?.eventMetaTitle} my-2`}>
+              {translatedTitle ?? event?.title}
+            </EventTitle>
+            {(event.description || translatedDescription) && (
+              <EventMetaBlock contentClassName="mb-8 break-words max-w-full max-h-[180px] scroll-bar pr-4">
+                <div
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={{
+                    __html: markdownToSafeHTMLClient(translatedDescription ?? event.description),
+                  }}
+                />
+              </EventMetaBlock>
+            )}
+          </div>
           <div className="space-y-4 font-medium rtl:-mr-2">
             {rescheduleUid && bookingData && (
               <EventMetaBlock icon="calendar">
