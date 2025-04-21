@@ -403,7 +403,9 @@ const BookerComponent = ({
                   classNames={{
                     eventMetaContainer: customClassNames?.eventMetaCustomClassNames?.eventMetaContainer,
                     eventMetaContent: classNames(
-                      layout === "tablet" && "grid grid-cols-[var(--booker-main-width)_1fr]",
+                      layout === "tablet" &&
+                        !(bookerState === "booking") &&
+                        "grid grid-cols-[var(--booker-main-width)_1fr]",
                       layout === "tablet" && (!hideEventTypeDetails && orgBannerUrl ? "pt-12" : "pt-4")
                     ),
                     eventMetaTitle: customClassNames?.eventMetaCustomClassNames?.eventMetaTitle,
@@ -436,8 +438,8 @@ const BookerComponent = ({
               key="book-event-form"
               area="main"
               className={classNames(
-                "sticky top-0 ml-[-1px] h-full p-6 md:w-[var(--booker-main-width)] lg:border-l",
-                layout === "tablet" && "mx-auto"
+                "sticky top-0 ml-[-1px] h-full p-6 md:border-l",
+                layout === "tablet" ? "w-full" : "md:w-[var(--booker-main-width)]"
               )}
               {...fadeInLeft}
               visible={bookerState === "booking" && !shouldShowFormInDialog}>

@@ -83,11 +83,10 @@ export const resizeAnimationConfig: ResizeAnimationConfig = {
     booking: {
       width: "100%",
       gridTemplateAreas: `
-      "meta"
-      "main"
+      "meta main"
       `,
-      gridTemplateColumns: "1fr",
-      gridTemplateRows: "minmax(min-content,max-content) minmax(450px,1fr)",
+      gridTemplateColumns: "var(--booker-meta-width) 1fr",
+      gridTemplateRows: "1fr",
     },
   },
   month_view: {
